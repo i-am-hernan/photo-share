@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
 
-export default function Home() {
+const Page = () => {
   const [uploading, setUploading] = useState(false);
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
@@ -67,4 +67,6 @@ export default function Home() {
       </div>
     </main>
   );
-} 
+};
+
+export default Page;
