@@ -9,7 +9,7 @@ const Page = () => {
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     setUploading(true);
-    
+    console.log("test");
     try {
       for (const file of acceptedFiles) {
         const formData = new FormData();
