@@ -1,19 +1,28 @@
 {
-  "name": "photo-share",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "wedding-photos",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/i-am-hernan/photo-share.git"
+  "dependencies": {
+    "next": "14.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-hot-toast": "^2.4.1",
+    "@vercel/blob": "^0.22.1"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/i-am-hernan/photo-share/issues"
-  },
-  "homepage": "https://github.com/i-am-hernan/photo-share#readme",
-  "description": ""
+  "devDependencies": {
+    "@types/node": "^20.11.19",
+    "@types/react": "^18.2.57",
+    "@types/react-dom": "^18.2.19",
+    "typescript": "^5.3.3",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1"
+  }
 }
