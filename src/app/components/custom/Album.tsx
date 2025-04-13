@@ -84,12 +84,12 @@ const Album = () => {
                                     alt={`${photo.pathname}`}
                                     fill
                                     sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
-                                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                                    className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                                     quality={85}
                                 />
                             </div>
                         </DialogTrigger>
-                        <DialogContent className="max-w-4xl p-0 bg-transparent border-none shadow-none">
+                        <DialogContent className="max-w-4xl p-0 border-none shadow-none" style={{ backgroundColor: 'transparent' }}>
                             <div className="relative w-full h-[80vh]">
                                 <Image
                                     src={photo.url}
@@ -115,7 +115,7 @@ const Album = () => {
                 <div className="flex justify-center my-4">
                     <button
                         onClick={() => fetchPhotos(album.cursor!)}
-                        className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+                        className="px-4 py-2 bg-primary text-white rounded-md hover:opacity-90 transition-colors"
                     >
                         Load More
                     </button>

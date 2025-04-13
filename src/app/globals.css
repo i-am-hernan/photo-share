@@ -5,7 +5,7 @@
 
 :root {
   --background: oklch(1 0 0);
-  --foreground: #3d2e18;
+  --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -41,7 +41,7 @@
 
 .dark {
   --background: oklch(0.145 0 0);
-  --foreground: #3d2e18;
+  --foreground: oklch(0.985 0 0);
   --card: oklch(0.145 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.145 0 0);
@@ -90,7 +90,7 @@
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
-} */
+} 
 
 /* Font utilities */
 .font-herr {
