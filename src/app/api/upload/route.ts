@@ -5,7 +5,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     try {
         const formData = await request.formData();
         const file = formData.get('file') as File;
-        console.log("test");
+;
         if (!file) {
             return NextResponse.json(
                 { error: 'No file provided' },
