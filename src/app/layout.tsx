@@ -5,8 +5,30 @@ import { Toaster } from "react-hot-toast";
 import Image from "next/image";
 const playfairDisplay = Playfair_Display({ weight: '400', subsets: ["latin"] });
 export const metadata: Metadata = {
-  title: "Wedding Photo Upload",
+  title: "Paulina and Steve's Wedding",
   description: "Upload your wedding photos",
+  robots: {
+    index: false,
+    follow: false,
+  },
+  icons: {
+    icon: '/img/poppy32.png',
+  },
+  openGraph: {
+    type: 'website',
+    title: "Paulina and Steve's Wedding",
+    description: "Upload your wedding photos",
+    siteName: "Paulina and Steve's Wedding",
+    images: [
+      {
+        url: "/img/banner.webp",
+        width: 1200,
+        height: 630,
+        alt: "Wedding banner",
+        type: "image/webp",
+      }
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -35,6 +57,16 @@ export default function RootLayout({
           </div>
           {children}
           <Toaster position="bottom-right" />
+          <Image
+              src="/img/footer.webp"
+              alt="Floral bottom decoration"
+              className="object-contain"
+              priority
+              width={1000}
+              height={1000}
+              style={{ width: '100%', height: '100%' }}
+              quality={100}
+            />
         </div>
       </body>
     </html>

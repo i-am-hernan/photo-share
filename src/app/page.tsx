@@ -12,17 +12,17 @@ export default function Home() {
 
   return (
     <main className="h-100">
-      <Tabs defaultValue="album" className='items-center'>
+      <Tabs defaultValue="share" className='items-center'>
         <TabsList className="justify-center">
+          <TabsTrigger value="share" className={`${playfairDisplay.className} text-[1rem]`}>Upload</TabsTrigger>
           <TabsTrigger value="album" className={`${playfairDisplay.className} text-[1rem]`}>Album</TabsTrigger>
-          <TabsTrigger value="share" className={`${playfairDisplay.className} text-[1rem]`}>Share</TabsTrigger>
         </TabsList>
-        <TabsContent value="album">
-          <Album />
-        </TabsContent>
         <TabsContent value="share">
           <h2 className={`text-1xl text-center mb-2 text-gray-500 text-[1.5em] ${dancingScript.className}`}>Please share your photos with us</h2>
           <Share />
+        </TabsContent>
+        <TabsContent value="album">
+          <Album />
         </TabsContent>
       </Tabs>
     </main>

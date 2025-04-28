@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- California Poppy (side view) -->
+  <g transform="translate(16, 16) scale(0.45)">
+    <!-- Stem -->
+    <path d="M0,0 C0,-30 0,-60 0,-90" stroke="#2d5a27" stroke-width="8" fill="none"/>
+    
+    <!-- Leaves -->
+    <path d="M0,-30 C-15,-35 -20,-40 -25,-45" stroke="#2d5a27" stroke-width="8" fill="none"/>
+    <path d="M0,-60 C15,-65 20,-70 25,-75" stroke="#2d5a27" stroke-width="8" fill="none"/>
+    
+    <!-- Flower (side view) -->
+    <g transform="translate(0,-90)">
+      <!-- Petals - cup-like shape from side view -->
+      <path d="M0,0 C-20,-10 -30,-20 -40,-30 C-50,-20 -60,-10 -60,0 C-60,10 -50,20 -40,30 C-30,20 -20,10 0,0" fill="#ff6b00"/>
+      <path d="M0,0 C20,-10 30,-20 40,-30 C50,-20 60,-10 60,0 C60,10 50,20 40,30 C30,20 20,10 0,0" fill="#ff6b00"/>
+      
+      <!-- Center - cup-like shape from side -->
+      <ellipse cx="0" cy="0" rx="30" ry="20" fill="#ffd700"/>
+      
+      <!-- Inner detail - adds depth to the flower -->
+      <ellipse cx="0" cy="0" rx="20" ry="15" fill="#ff8c00"/>
+      
+      <!-- Additional detail - adds texture to the center -->
+      <ellipse cx="0" cy="0" rx="10" ry="8" fill="#ff6b00"/>
+    </g>
+  </g>
+</svg> 
