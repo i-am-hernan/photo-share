@@ -53,7 +53,7 @@ export default function RootLayout({
               style={{ width: '100%', height: '100%' }}
               quality={100}
             />
-            <h1 className={`text-[3em] md:text-[3.4em] text-center font-dancingScript relative bottom-10 ${playfairDisplay.className} text-foreground font-thin`}>{`PAULINA & STEVE`}</h1>
+            <h1 className={`text-[2em] md:text-[3.4em] text-center font-dancingScript relative bottom-10 ${playfairDisplay.className} text-foreground font-thin`}>{`PAULINA & STEVE`}</h1>
           </div>
           {children}
           <Toaster position="bottom-right" />
