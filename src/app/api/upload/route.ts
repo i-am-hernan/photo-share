@@ -3,25 +3,29 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request): Promise<NextResponse> {
     const body = (await request.json()) as HandleUploadBody;
+    console.log('Received upload request with body:', body);
 
     try {
         const jsonResponse = await handleUpload({
             body,
             request,
             onBeforeGenerateToken: async (pathname, clientPayload) => {
-                // Generate a client token for the browser to upload the file
-                return {
+                console.log('Generating token for:', { pathname, clientPayload });
+                const options = {
                     allowedContentTypes: ['image/jpeg', 'image/png', 'image/gif'],
                     addRandomSuffix: true,
                     maximumSizeInBytes: 10 * 1024 * 1024, // 10MB
                     validUntil: Date.now() + 3600000, // 1 hour from now
                 };
+                console.log('Token generation options:', options);
+                return options;
             },
             onUploadCompleted: async ({ blob }) => {
-                console.log('blob upload completed', blob);
+                console.log('Upload completed successfully:', blob);
             },
         });
 
+        console.log('Returning response:', jsonResponse);
         return NextResponse.json(jsonResponse);
     } catch (error) {
         console.error('Upload error:', error);

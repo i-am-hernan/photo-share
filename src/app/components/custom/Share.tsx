@@ -11,6 +11,8 @@ const Share = (props: any) => {
 
         try {
             for (const file of acceptedFiles) {
+                console.log('Starting upload for file:', file.name);
+                
                 // 1. Get the client token from the server
                 const response = await fetch('/api/upload', {
                     method: 'POST',
@@ -24,22 +26,31 @@ const Share = (props: any) => {
                 });
 
                 if (!response.ok) {
-                    throw new Error('Failed to get upload token');
+                    const errorText = await response.text();
+                    console.error('Server response error:', errorText);
+                    throw new Error(`Failed to get upload token: ${errorText}`);
                 }
 
-                const { clientToken } = await response.json();
+                const responseData = await response.json();
+                console.log('Received token response:', responseData);
+                
+                if (!responseData.clientToken) {
+                    throw new Error('No client token received from server');
+                }
 
                 // 2. Upload the file using the client token
+                console.log('Attempting to upload with token:', responseData.clientToken);
                 const { url } = await put(file.name, file, {
                     access: 'public',
-                    token: clientToken,
+                    token: responseData.clientToken,
                 });
 
+                console.log('Upload successful, file available at:', url);
                 toast.success(`Successfully uploaded ${file.name}`);
             }
         } catch (error) {
+            console.error('Upload error details:', error);
             toast.error('Failed to upload files');
-            console.error('Upload error:', error);
         } finally {
             setUploading(false);
         }
