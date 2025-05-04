@@ -1,6 +1,7 @@
 import toast from 'react-hot-toast';
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { put } from '@vercel/blob';
 
 const Share = (props: any) => {
     const [uploading, setUploading] = useState(false);
@@ -10,19 +11,30 @@ const Share = (props: any) => {
 
         try {
             for (const file of acceptedFiles) {
-                const formData = new FormData();
-                formData.append('file', file);
-
+                // 1. Get the client token from the server
                 const response = await fetch('/api/upload', {
                     method: 'POST',
-                    body: formData,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        type: 'blob.generate-client-token',
+                        payload: file.name,
+                    }),
                 });
 
                 if (!response.ok) {
-                    throw new Error('Upload failed');
+                    throw new Error('Failed to get upload token');
                 }
 
-                const data = await response.json();
+                const { clientToken } = await response.json();
+
+                // 2. Upload the file using the client token
+                const { url } = await put(file.name, file, {
+                    access: 'public',
+                    token: clientToken,
+                });
+
                 toast.success(`Successfully uploaded ${file.name}`);
             }
         } catch (error) {
