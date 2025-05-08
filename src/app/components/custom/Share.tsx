@@ -2,6 +2,8 @@ import toast from 'react-hot-toast';
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { put } from '@vercel/blob';
+import { type PutBlobResult } from '@vercel/blob';
+import { upload } from '@vercel/blob/client';
 
 const Share = (props: any) => {
     const [uploading, setUploading] = useState(false);
@@ -12,40 +14,16 @@ const Share = (props: any) => {
         try {
             for (const file of acceptedFiles) {
                 console.log('Starting upload for file:', file.name);
-                
-                // 1. Get the client token from the server
-                const response = await fetch('/api/upload', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        type: 'blob.generate-client-token',
-                        payload: file.name,
-                    }),
-                });
 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('Server response error:', errorText);
-                    throw new Error(`Failed to get upload token: ${errorText}`);
-                }
-
-                const responseData = await response.json();
-                console.log('Received token response:', responseData);
-                
-                if (!responseData.clientToken) {
-                    throw new Error('No client token received from server');
-                }
-
-                // 2. Upload the file using the client token
-                console.log('Attempting to upload with token:', responseData.clientToken);
-                const { url } = await put(file.name, file, {
+                const newBlob = await upload(file.name, file, {
                     access: 'public',
-                    token: responseData.clientToken,
+                    handleUploadUrl: '/api/upload',
                 });
 
-                console.log('Upload successful, file available at:', url);
+                if (!newBlob) {
+                    throw new Error(`Failed to get upload token`);
+                }
+
                 toast.success(`Successfully uploaded ${file.name}`);
             }
         } catch (error) {
