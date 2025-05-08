@@ -5,9 +5,31 @@ import { put } from '@vercel/blob';
 import { type PutBlobResult } from '@vercel/blob';
 import { upload } from '@vercel/blob/client';
 import imageCompression from 'browser-image-compression';
+import heicConvert from 'heic-convert';
 
 const Share = (props: any) => {
     const [uploading, setUploading] = useState(false);
+
+    const convertHeicToJpeg = async (file: File): Promise<File> => {
+        try {
+            const arrayBuffer = await file.arrayBuffer();
+            const buffer = Buffer.from(arrayBuffer);
+            
+            const jpegBuffer = await heicConvert({
+                buffer: buffer,
+                format: 'JPEG',
+                quality: 0.9
+            });
+
+            return new File([jpegBuffer], file.name.replace(/\.heic$/i, '.jpg'), {
+                type: 'image/jpeg',
+                lastModified: file.lastModified,
+            });
+        } catch (error) {
+            console.error('Error converting HEIC to JPEG:', error);
+            throw new Error('Failed to convert HEIC file');
+        }
+    };
 
     const compressImage = async (file: File): Promise<File> => {
         const options = {
@@ -33,11 +55,16 @@ const Share = (props: any) => {
 
         try {
             for (const file of acceptedFiles) {
+                // Convert HEIC to JPEG if needed
+                let fileToProcess = file;
+                if (file.type === 'image/heic' || file.name.toLowerCase().endsWith('.heic')) {
+                    fileToProcess = await convertHeicToJpeg(file);
+                }
 
                 // Compress if file is larger than 10MB
-                const fileToUpload = file.size > 10 * 1024 * 1024
-                    ? await compressImage(file)
-                    : file;
+                const fileToUpload = fileToProcess.size > 10 * 1024 * 1024 
+                    ? await compressImage(fileToProcess)
+                    : fileToProcess;
 
                 const newBlob = await upload(fileToUpload.name, fileToUpload, {
                     access: 'public',
@@ -61,7 +88,7 @@ const Share = (props: any) => {
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         accept: {
-            'image/*': ['.jpeg', '.jpg', '.png', '.gif']
+            'image/*': ['.jpeg', '.jpg', '.png', '.heic', '.webp']
         }
     });
 
@@ -80,7 +107,7 @@ const Share = (props: any) => {
                 <div>
                     <p className="text-gray-600">Drag and drop your wedding photos here, or click to select files</p>
                     <p className="text-sm text-gray-500 mt-2">Help us capture every moment of our special day!</p>
-                    <p className="text-sm text-gray-500 mt-1">Supported formats: JPEG, JPG, PNG, GIF</p>
+                    <p className="text-sm text-gray-500 mt-1">Supported formats: JPEG, PNG, HEIC, WebP</p>
                 </div>
             )}
         </div>

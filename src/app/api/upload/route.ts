@@ -10,12 +10,11 @@ export async function POST(request: Request): Promise<NextResponse> {
             request,
             onBeforeGenerateToken: async (pathname, clientPayload) => {
                 const options = {
-                    allowedContentTypes: ['image/jpeg', 'image/png', 'image/gif'],
+                    allowedContentTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
                     addRandomSuffix: true,
                     maximumSizeInBytes: 10 * 1024 * 1024, // 10MB
                     validUntil: Date.now() + 3600000, // 1 hour from now
                 };
-                console.log('Token generation options:', options);
                 return options;
             },
             onUploadCompleted: async ({ blob }) => {
