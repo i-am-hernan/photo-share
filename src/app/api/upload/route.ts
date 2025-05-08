@@ -3,14 +3,12 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request): Promise<NextResponse> {
     const body = (await request.json()) as HandleUploadBody;
-    console.log('Received upload request with body:', body);
 
     try {
         const jsonResponse = await handleUpload({
             body,
             request,
             onBeforeGenerateToken: async (pathname, clientPayload) => {
-                console.log('Generating token for:', { pathname, clientPayload });
                 const options = {
                     allowedContentTypes: ['image/jpeg', 'image/png', 'image/gif'],
                     addRandomSuffix: true,
@@ -25,7 +23,6 @@ export async function POST(request: Request): Promise<NextResponse> {
             },
         });
 
-        console.log('Returning response:', jsonResponse);
         return NextResponse.json(jsonResponse);
     } catch (error) {
         console.error('Upload error:', error);

@@ -4,24 +4,48 @@ import { useDropzone } from 'react-dropzone';
 import { put } from '@vercel/blob';
 import { type PutBlobResult } from '@vercel/blob';
 import { upload } from '@vercel/blob/client';
+import imageCompression from 'browser-image-compression';
 
 const Share = (props: any) => {
     const [uploading, setUploading] = useState(false);
+
+    const compressImage = async (file: File): Promise<File> => {
+        const options = {
+            maxSizeMB: 10,
+            maxWidthOrHeight: 1920,
+            useWebWorker: true
+        };
+
+        try {
+            const compressedFile = await imageCompression(file, options);
+            return new File([compressedFile], file.name, {
+                type: file.type,
+                lastModified: file.lastModified,
+            });
+        } catch (error) {
+            console.error('Error compressing image:', error);
+            return file; // Return original file if compression fails
+        }
+    };
 
     const onDrop = useCallback(async (acceptedFiles: File[]) => {
         setUploading(true);
 
         try {
             for (const file of acceptedFiles) {
-                console.log('Starting upload for file:', file.name);
 
-                const newBlob = await upload(file.name, file, {
+                // Compress if file is larger than 10MB
+                const fileToUpload = file.size > 10 * 1024 * 1024
+                    ? await compressImage(file)
+                    : file;
+
+                const newBlob = await upload(fileToUpload.name, fileToUpload, {
                     access: 'public',
                     handleUploadUrl: '/api/upload',
                 });
 
                 if (!newBlob) {
-                    throw new Error(`Failed to get upload token`);
+                    throw new Error(`Failed to upload file`);
                 }
 
                 toast.success(`Successfully uploaded ${file.name}`);
